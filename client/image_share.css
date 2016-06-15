@@ -1,0 +1,16 @@
+/* CSS declarations go here */
+.thumbnail{
+	height: 500px;
+}
+.thumbnail-img{
+	max-height: 200px;
+}
+body {
+	padding-top: 50px;
+}
+.row{
+	padding-top: 10px;
+}
+.btn-login{
+	padding-top: 15px;
+}
