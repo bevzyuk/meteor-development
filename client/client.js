@@ -1,13 +1,40 @@
 // Routing
-Router.route('/', function () {
-  this.render('images');
+Router.configure({
+  layoutTemplate: 'ApplicationLayout'
+});
+
+Router.route('/', function (){
+  this.render('welcome',{
+    to:"main"
+  });
+});
+
+Router.route('/images', function () {
+  this.render('navbar',{
+    to:"navbar"
+  });
+  this.render('images',{
+    to:"main"
+  });
+});
+
+Router.route('/image/:_id', function () {
+  this.render('navbar',{
+    to:"navbar"
+  });
+  this.render('image',{
+    to:"main",
+    data:function(){
+      return Images.findOne({_id:this.params._id});
+    }
+  });
 });
 
 
 Session.set("imagesLimited", 8);
       
-  lastScrollTop = 0;
-  $(window).scroll(function(event) {
+lastScrollTop = 0;
+$(window).scroll(function(event) {
     if($(window).scrollTop() + $(window).height() > $(document).height()-150){
           var scrollTop = $(this).scrollTop();
           if (scrollTop > lastScrollTop) {
@@ -15,14 +42,15 @@ Session.set("imagesLimited", 8);
           }else{
                 // going up
           }
-            lastScrollTop = scrollTop;
+      lastScrollTop = scrollTop;
     }
-  });
-  Accounts.ui.config({
-    passwordSignupFields: "USERNAME_AND_EMAIL"
-  });
+});
 
-  Template.images.helpers({
+Accounts.ui.config({
+  passwordSignupFields: "USERNAME_AND_EMAIL"
+});
+
+Template.images.helpers({
     images:function(){
     if (Session.get("userFilter")) {
       return Images.find(
@@ -61,7 +89,7 @@ Session.set("imagesLimited", 8);
     
    });
 
-  Template.body.helpers({
+Template.body.helpers({
     userName:function(){
     if(Meteor.user()){
       return Meteor.user().username;
@@ -71,17 +99,17 @@ Session.set("imagesLimited", 8);
   }})
 
 
-   Template.images.events({
-    'click .js-image':function(event){
-        $(event.target).css("width", "50px");
-    },
-    'click .js-btn-remove':function(event){
-      var img_id = this._id;
-      //console.log('Id is: '+ img_id);
-        $("#"+img_id).hide('slow', function(){
-          Images.remove({"_id":img_id});
-        });
-    },
+Template.images.events({
+ /* 'click .js-image':function(event){
+      $(event.target).css("width", "50px");
+  },*/
+  'click .js-btn-remove':function(event){
+    var img_id = this._id;
+    //console.log('Id is: '+ img_id);
+      $("#"+img_id).hide('slow', function(){
+        Images.remove({"_id":img_id});
+      });
+  },
    'click .js-rate-image':function(event){
      var rating = $(event.currentTarget).data("userrating");
      //console.log(rating);

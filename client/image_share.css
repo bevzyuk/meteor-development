@@ -14,3 +14,10 @@ body {
 .btn-login{
 	padding-top: 15px;
 }
+.jumbotron{
+	position: relative;
+}
+.btn-enter {
+	position: relative;
+	left: 45%;
+}
