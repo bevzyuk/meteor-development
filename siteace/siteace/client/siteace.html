@@ -1,0 +1,134 @@
+<head>
+  <title>siteace</title>
+</head>
+
+<body>
+		
+	
+</body>
+
+
+
+<template name="navbar">
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+		    <div class="navbar-header">
+		      <a class="navbar-brand" href="/">
+		        Site Ace
+		      </a>
+		    </div>
+		    {{> loginButtons}}
+		  </div>
+		</nav>
+</template>
+
+<template name="ApplicationLayout">
+	{{> yield "navbar"}}
+  <div class="container"> 
+  	{{> yield "form"}}
+  	{{> yield "main"}}
+  </div>
+</template>
+
+<template name="website_form">
+	{{#if userLogedIn}}	
+	<a class="btn btn-default js-toggle-website-form" href="#">
+  		<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+	</a>
+	{{/if}}
+	<div id="website_form" class="hidden_div">
+		<form class="js-save-website-form">
+		  <div class="form-group">
+		    <label for="url">Site address</label>
+		    <input type="text" class="form-control" id="url" placeholder="http://www.mysite.com" required>
+		  </div>
+		  <div class="form-group">
+		    <label for="title">Title</label>
+		    <input type="text" class="form-control" id="title" placeholder="Mysite">
+		  </div>
+		    <div class="form-group">
+		    <label for="description">Description</label>
+		    <input type="text" class="form-control" id="description" placeholder="I found this site really useful for ..." required>
+		  </div>
+
+		  <button type="submit" class="btn btn-default">Submit</button>
+		</form>
+	</div>
+</template>
+
+<!-- template that displays several website items -->
+<template name="website_list">
+	<ol>
+	{{#each websites}}	
+		{{>website_item}}
+	{{/each}}
+	</ol>
+</template>
+
+<template name="single_item_page">
+ <div class="site-item">	
+	<a href="{{url}}" target="_blank">{{title}}</a>
+	<p>
+		{{description}}
+	</p>
+	<a href="#" class="btn btn-default js-upvote">
+		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+	</a>
+	<span class="rating">{{rating}}</span>
+	<a href="#" class="btn btn-default js-downvote">
+		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+	</a>
+	<p class="created-date">Created on: {{getFormatedDate}}</p>
+	<a href="/" class="btn btn-default">Back to list</a>
+	<!-- you will be putting your up and down vote buttons in here! -->
+  </div>	
+  <div id='comment_form' class="comments-block">
+  	<form class="js-add-comment">
+  	<div class="input-group">
+  		<span class="input-group-addon glyphicon glyphicon-user" id="basic-addon1"></span>
+  		<input type="text" id="comment" class="form-control" placeholder="Join the descussion" aria-describedby="basic-addon1">
+	</div>
+	<div class="alert_message"></div>
+  	</form>
+
+  	<div class="comments-list" id="{{_id}}">
+  		{{#each comments}}
+			<div class="comment-item" id="{{_id}}">
+				<span class="glyphicon glyphicon-user" id="user_icon"><a href="#" class="comment-author">{{getUserName}}</a></span>
+				<p class="comment-message">{{comment}}</p>
+				<p class="text-right  comment-time">{{createdOn}}</p>
+				<button type="button" class="btn btn-default  js-comment-like" aria-label="Left Align">
+  					<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
+				</button>	
+				<span class="comment-rating">{{likes}}</span>
+				<button type="button" class="btn btn-default js-comment-dislike" aria-label="Left Align">
+  					<span class="glyphicon glyphicon-thumbs-down" aria-hidden="true"></span>
+				</button>
+			</div>
+  		{{/each}}
+  	</div>	
+
+  </div>
+</template>
+
+<!-- template that displays individual website entries -->
+<template name="website_item">
+<li>
+ <div class="site-item">	
+	<a href="/detail/{{_id}}">{{title}}</a>
+	<p>
+		{{description}}
+	</p>
+	<a href="#" class="btn btn-default js-upvote">
+		<span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+	</a>
+	<span class="rating">{{rating}}</span>
+	<a href="#" class="btn btn-default js-downvote">
+		<span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+	</a>
+	<p class="created-date">Created on: {{getFormatedDate}}</p>
+	Comments (<a href="/detail/{{_id}}">{{commentNum}}</a>)
+	<!-- you will be putting your up and down vote buttons in here! -->
+  </div>	
+</li>
+</template>
